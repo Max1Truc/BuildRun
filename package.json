@@ -1,5 +1,5 @@
 {
-  "name": "compile-run",
+  "name": "CompileRun",
   "version": "1.0.0",
   "description": "A plugin for the Graviton Code Editor to compile and run programs.",
   "main": "main.js",
