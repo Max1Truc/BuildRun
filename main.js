@@ -1,27 +1,42 @@
-function getCurrentFileExtension() {
+function getCurrentFile() {
   var currentEditor = graviton.getCurrentEditor();
   if (currentEditor != null) {
-    var filename = currentEditor.path.split("/").pop(),
-        extension = filename.split(".").pop();
-    return extension;
+    var name = currentEditor.path.split("/").pop(),
+        extension = name.split(".").pop();
+    return {name, extension};
   } else {
     return "";
   }
 }
 
-function run() {
-  var extension = getCurrentFileExtension();
+function exec(command) {
+  current_screen.terminal.xterm.emit("data", command + "\n");
 }
 
-const myPluginDropMenu = new dropMenu({
-  id:"my_plugin_dm"
+function resetTerminal() {
+  commanders.terminal();
+  current_screen.terminal.xterm.clear()
+}
+
+function run() {
+  var file = getCurrentFile();
+
+  if (file.extension == "rb") {
+    exec("ruby " + file.name)
+  }
+}
+
+const CompileRunDropMenu = new dropMenu({
+  id:"compile_run_dm"
 });
-myPluginDropMenu.setList({
-  "button": "My Plugin!",
-  "list":{
-    "Click me!":{
-      click:function(){
-        new Notification('Whoah!!','A notification!');
+
+CompileRunDropMenu.setList({
+  "button": "🔨",
+  "list": {
+    "Run": {
+      click: function(){
+        resetTerminal();
+        run();
       }
     }
   }
