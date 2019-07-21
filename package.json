@@ -1,0 +1,29 @@
+{
+  "name": "compile-run",
+  "version": "1.0.0",
+  "description": "A plugin for the Graviton Code Editor to compile and run programs.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Max1Truc/CompileRun.git"
+  },
+  "keywords": [
+    "graviton",
+    "plugin",
+    "compile",
+    "run",
+    "execute",
+    "build"
+  ],
+  "author": "Max1Truc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Max1Truc/CompileRun/issues"
+  },
+  "homepage": "https://github.com/Max1Truc/CompileRun#readme",
+  "folder":"CompileRun",
+  "css":[]
+}
