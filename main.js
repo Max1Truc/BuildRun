@@ -5,8 +5,19 @@ function getRunCommand() {
     filepath = graviton.getCurrentFile().path,
     command = ""
 
-  if (COMMANDS[currentMode])
+  if (COMMANDS[currentMode] && COMMANDS[currentMode].run)
     command = COMMANDS[currentMode].run(filepath)
+
+  return command
+}
+
+function getBuildCommand() {
+  var currentMode = graviton.getCurrentEditor().editor.options.mode,
+    filepath = graviton.getCurrentFile().path,
+    command = ""
+
+  if (COMMANDS[currentMode] && COMMANDS[currentMode].build)
+    command = COMMANDS[currentMode].build(filepath)
 
   return command
 }
@@ -34,11 +45,11 @@ function compile() {
   // Compile
 }
 
-const CompileRunDropMenu = new dropMenu({
-  id: "compile_run_dm"
+const BuildRunDropMenu = new dropMenu({
+  id: "build_run_dm"
 })
 
-CompileRunDropMenu.setList({
+BuildRunDropMenu.setList({
   button: "🔨",
   list: {
     Run: {
@@ -47,7 +58,7 @@ CompileRunDropMenu.setList({
         run()
       }
     },
-    Compile: {
+    Build: {
       click: function() {
         resetTerminal()
         compile()

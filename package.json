@@ -1,5 +1,5 @@
 {
-  "name": "CompileRun",
+  "name": "BuildRun",
   "version": "1.0.0",
   "description": "A plugin for the Graviton Code Editor to compile and run programs.",
   "main": "main.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Max1Truc/CompileRun.git"
+    "url": "git+https://github.com/Max1Truc/BuuildRun.git"
   },
   "keywords": [
     "graviton",
@@ -21,9 +21,9 @@
   "author": "Max1Truc",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Max1Truc/CompileRun/issues"
+    "url": "https://github.com/Max1Truc/BuildRun/issues"
   },
-  "homepage": "https://github.com/Max1Truc/CompileRun#readme",
-  "folder":"CompileRun",
+  "homepage": "https://github.com/Max1Truc/BuildRun#readme",
+  "folder":"BuildRun",
   "css":[]
 }
