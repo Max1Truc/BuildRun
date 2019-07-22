@@ -1,9 +1,23 @@
-function getCurrentFile() {
+const FILE_TYPES = require("./filetypes.js");
+
+function getCurrentFileInfo() {
   var currentEditor = graviton.getCurrentEditor();
   if (currentEditor != null) {
     var name = currentEditor.path.split("/").pop(),
-        extension = name.split(".").pop();
-    return {name, extension};
+        extension = name.split(".").pop(),
+        type = "",
+        command = "";
+    
+    for (i in FILE_TYPES) {
+      if (FILE_TYPES[i].ext == extension) {
+        type = FILE_TYPES[i].name;
+        if (FILE_TYPES[i].command != undefined)
+          command = FILE_TYPES[i].command(currentEditor.path);
+        break;
+      }
+    }
+    
+    return {name, extension, type, command};
   } else {
     return "";
   }
@@ -14,16 +28,13 @@ function exec(command) {
 }
 
 function resetTerminal() {
+  commanders.closeTerminal();
   commanders.terminal();
-  current_screen.terminal.xterm.clear()
 }
 
 function run() {
-  var file = getCurrentFile();
-
-  if (file.extension == "rb") {
-    exec("ruby " + file.name)
-  }
+  var file = getCurrentFileInfo();
+  exec(file.command);
 }
 
 const CompileRunDropMenu = new dropMenu({
@@ -38,6 +49,11 @@ CompileRunDropMenu.setList({
         resetTerminal();
         run();
       }
+    }, "Compile": {
+      click: function(){
+        resetTerminal();
+        compile();
+      }
     }
   }
-})
+});
