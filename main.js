@@ -26,7 +26,7 @@ function exec(command) {
   window.setTimeout(() => {
     current_screen.terminal.xterm.emit(
       "data",
-      (command || "echo && echo File format not supported") + "\n"
+      (command || "echo File format not supported") + "\n"
     )
   }, 100)
 }
@@ -41,8 +41,9 @@ function run() {
   exec(command)
 }
 
-function compile() {
-  // Compile
+function build() {
+  var command = getBuildCommand()
+  exec(command)
 }
 
 const BuildRunDropMenu = new dropMenu({
@@ -61,7 +62,7 @@ BuildRunDropMenu.setList({
     Build: {
       click: function() {
         resetTerminal()
-        compile()
+        build()
       }
     }
   }

@@ -14,11 +14,37 @@ function template(strings, ...keys) {
   }
 }
 
+function genBinaryName(path) {
+  var binary_name = path
+    .split("/")
+    .pop()
+    .split(".")
+  binary_name.pop()
+  binary_name = binary_name.join(".")
+  return binary_name
+}
+
 module.exports = {
-  python: {
+  python: { run: template`python ${0}` },
+  ruby: { run: template`ruby ${0}` },
+  "text/x-csrc": {
+    build: path => {
+      var binary_name = genBinaryName(path)
+      return template`mkdir dist\ngcc ${0} -o ${1}`(path, "dist/" + binary_name)
+    },
     run: path => {
-      return "python " + path
+      var binary_name = genBinaryName(path)
+      return "./dist/" + binary_name
     }
   },
-  ruby: { run: template`ruby ${0}` }
+  "text/x-c++src": {
+    build: path => {
+      var binary_name = genBinaryName(path)
+      return template`mkdir dist\ng++ ${0} -o ${1}`(path, "dist/" + binary_name)
+    },
+    run: path => {
+      var binary_name = genBinaryName(path)
+      return "./dist/" + binary_name
+    }
+  }
 }
