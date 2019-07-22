@@ -1,59 +1,57 @@
-const FILE_TYPES = require("./filetypes.js");
+const COMMANDS = require("./filetypes.js")
 
-function getCurrentFileInfo() {
-  var currentEditor = graviton.getCurrentEditor();
-  if (currentEditor != null) {
-    var name = currentEditor.path.split("/").pop(),
-        extension = name.split(".").pop(),
-        type = "",
-        command = "";
-    
-    for (i in FILE_TYPES) {
-      if (FILE_TYPES[i].ext == extension) {
-        type = FILE_TYPES[i].name;
-        if (FILE_TYPES[i].command != undefined)
-          command = FILE_TYPES[i].command(currentEditor.path);
-        break;
-      }
-    }
-    
-    return {name, extension, type, command};
-  } else {
-    return "";
-  }
+function getRunCommand() {
+  var currentMode = graviton.getCurrentEditor().editor.options.mode,
+    filepath = graviton.getCurrentFile().path,
+    command = ""
+
+  if (COMMANDS[currentMode])
+    command = COMMANDS[currentMode].run(filepath)
+
+  return command
 }
 
 function exec(command) {
-  current_screen.terminal.xterm.emit("data", command + "\n");
+  window.setTimeout(() => {
+    current_screen.terminal.xterm.emit(
+      "data",
+      (command || "echo && echo File format not supported") + "\n"
+    )
+  }, 100)
 }
 
 function resetTerminal() {
-  commanders.closeTerminal();
-  commanders.terminal();
+  commanders.closeTerminal()
+  commanders.terminal()
 }
 
 function run() {
-  var file = getCurrentFileInfo();
-  exec(file.command);
+  var command = getRunCommand()
+  exec(command)
+}
+
+function compile() {
+  // Compile
 }
 
 const CompileRunDropMenu = new dropMenu({
-  id:"compile_run_dm"
-});
+  id: "compile_run_dm"
+})
 
 CompileRunDropMenu.setList({
-  "button": "🔨",
-  "list": {
-    "Run": {
-      click: function(){
-        resetTerminal();
-        run();
+  button: "🔨",
+  list: {
+    Run: {
+      click: function() {
+        resetTerminal()
+        run()
       }
-    }, "Compile": {
-      click: function(){
-        resetTerminal();
-        compile();
+    },
+    Compile: {
+      click: function() {
+        resetTerminal()
+        compile()
       }
     }
   }
-});
+})
