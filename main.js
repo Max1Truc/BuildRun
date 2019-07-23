@@ -1,23 +1,32 @@
-const COMMANDS = require("./filetypes.js")
+var fs = require("fs")
 
-function getRunCommand() {
-  var currentMode = graviton.getCurrentEditor().editor.options.mode,
-    filepath = graviton.getCurrentFile().path,
+const FILE_COMMANDS = require("./filetypes.js")
+const PROJECT_COMMANDS = require("./projectTypes.js")
+
+function getCommand(command_type) {
+  var rootDir = graviton.getCurrentDirectory(),
     command = ""
 
-  if (COMMANDS[currentMode] && COMMANDS[currentMode].run)
-    command = COMMANDS[currentMode].run(filepath)
+  if (rootDir) {
+    // We're probably inside a project directory
+    var rootFiles = fs.readdirSync(rootDir)
 
-  return command
-}
+    PROJECT_COMMANDS.forEach(projectType => {
+      rootFiles.forEach(file => {
+        if (projectType.files.indexOf(file) != -1 && projectType[command_type]) {
+          command = projectType[command_type](rootDir)
+        }
+      })
+    })
+  }
 
-function getBuildCommand() {
-  var currentMode = graviton.getCurrentEditor().editor.options.mode,
-    filepath = graviton.getCurrentFile().path,
-    command = ""
+  if (!command) {
+    var currentMode = graviton.getCurrentEditor().editor.options.mode,
+      filepath = graviton.getCurrentFile().path
 
-  if (COMMANDS[currentMode] && COMMANDS[currentMode].build)
-    command = COMMANDS[currentMode].build(filepath)
+    if (FILE_COMMANDS[currentMode] && FILE_COMMANDS[currentMode][command_type])
+      command = FILE_COMMANDS[currentMode][command_type](filepath)
+  }
 
   return command
 }
@@ -26,23 +35,25 @@ function exec(command) {
   window.setTimeout(() => {
     current_screen.terminal.xterm.emit(
       "data",
-      (command || "echo File format not supported") + "\n"
+      (command || "echo I cannot do that with your project / file") + "\n"
     )
   }, 100)
 }
 
 function resetTerminal() {
+  var path =
+    graviton.getCurrentDirectory() || (graviton.getCurrentFile().path + "/..")
   commanders.closeTerminal()
-  commanders.terminal()
+  commanders.terminal({ path })
 }
 
 function run() {
-  var command = getRunCommand()
+  var command = getCommand("run")
   exec(command)
 }
 
 function build() {
-  var command = getBuildCommand()
+  var command = getCommand("build")
   exec(command)
 }
 

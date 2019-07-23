@@ -31,20 +31,12 @@ module.exports = {
     build: path => {
       var binary_name = genBinaryName(path)
       return template`mkdir dist\ngcc ${0} -o ${1}`(path, "dist/" + binary_name)
-    },
-    run: path => {
-      var binary_name = genBinaryName(path)
-      return "./dist/" + binary_name
     }
   },
   "text/x-c++src": {
     build: path => {
       var binary_name = genBinaryName(path)
       return template`mkdir dist\ng++ ${0} -o ${1}`(path, "dist/" + binary_name)
-    },
-    run: path => {
-      var binary_name = genBinaryName(path)
-      return "./dist/" + binary_name
     }
   }
 }
