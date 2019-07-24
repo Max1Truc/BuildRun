@@ -53,12 +53,14 @@ function searchExecutables(directory) {
 function searchBuild(projectDir) {
   var bin_dirs = [
       ".",
+      "bin"
       "dist",
       "dist/Release",
       "dist/release",
       "dist/Debug",
       "dist/debug",
-      "bin"
+      "target/debug",
+      "target/release",
     ],
     binaries = []
 
@@ -79,7 +81,7 @@ module.exports = [
   },
   {
     name: "Binary release project",
-    files: ["Makefile", "dist", "bin"],
+    files: ["Makefile", "dist", "bin", "target"],
     run: path => {
       var binary = searchBuild(path) || ""
       return graviton.currentOS().name == "Windows" || !binary
@@ -92,5 +94,11 @@ module.exports = [
     files: ["package.json"],
     build: template`npm run build`,
     run: template`npm start`
+  },
+  {
+    name: "Rust",
+    files: ["Cargo.toml"],
+    build: template`cargo build`,
+    run: template`cargo run`
   }
 ]
