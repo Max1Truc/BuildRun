@@ -41,7 +41,7 @@ function searchExecutables(directory) {
   try {
     var files = fs.readdirSync(directory)
     files.forEach(element => {
-      if (isExecutable(directory+"/"+element)) {
+      if (isExecutable(directory + "/" + element)) {
         executables.push(element)
       }
     })
@@ -72,12 +72,14 @@ function searchBuild(projectDir) {
 }
 
 module.exports = [
-  { name: "Python", files: [], run: template`python ${0}` },
-  { name: "Ruby", files: [], run: template`ruby ${0}` },
   {
     name: "Make",
     files: ["Makefile"],
-    build: template`make clean\nmake`,
+    build: template`make clean\nmake`
+  },
+  {
+    name: "Binary release project",
+    files: ["Makefile", "dist", "bin"],
     run: path => {
       var binary = searchBuild(path) || ""
       return graviton.currentOS().name == "Windows" || !binary
