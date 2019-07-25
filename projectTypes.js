@@ -53,14 +53,14 @@ function searchExecutables(directory) {
 function searchBuild(projectDir) {
   var bin_dirs = [
       ".",
-      "bin"
+      "bin",
       "dist",
       "dist/Release",
       "dist/release",
       "dist/Debug",
       "dist/debug",
       "target/debug",
-      "target/release",
+      "target/release"
     ],
     binaries = []
 

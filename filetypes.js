@@ -38,7 +38,7 @@ module.exports = {
       var binary_name = genBinaryName(path)
       return template`mkdir dist\ng++ ${0} -o ${1}`(path, "dist/" + binary_name)
     }
-  }
+  },
   rust: {
     build: path => {
       var binary_name = genBinaryName(path)

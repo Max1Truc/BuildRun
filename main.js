@@ -13,7 +13,10 @@ function getCommand(command_type) {
 
     PROJECT_COMMANDS.forEach(projectType => {
       rootFiles.forEach(file => {
-        if (projectType.files.indexOf(file) != -1 && projectType[command_type]) {
+        if (
+          projectType.files.indexOf(file) != -1 &&
+          projectType[command_type]
+        ) {
           command = projectType[command_type](rootDir)
         }
       })
@@ -42,7 +45,7 @@ function exec(command) {
 
 function resetTerminal() {
   var path =
-    graviton.getCurrentDirectory() || (graviton.getCurrentFile().path + "/..")
+    graviton.getCurrentDirectory() || graviton.getCurrentFile().path + "/.."
   commanders.closeTerminal()
   commanders.terminal({ path })
 }
