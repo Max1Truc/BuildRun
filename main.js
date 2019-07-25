@@ -9,7 +9,7 @@ function getCommand(command_type) {
 
   if (rootDir) {
     // We're probably inside a project directory
-    var rootFiles = fs.readdirSync(rootDir)
+    var rootFiles = fs.readdirSync(rootDir).concat("bin")
 
     PROJECT_COMMANDS.forEach(projectType => {
       rootFiles.forEach(file => {
