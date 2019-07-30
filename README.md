@@ -1,4 +1,4 @@
-# Build
+# BuildRun
 A plugin for the Graviton Code Editor to build and run programs.
 
 ## Contribute
